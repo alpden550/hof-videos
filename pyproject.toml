@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hof-videos"
+version = "0.1.0"
+description = "Personal hall of fame videos."
+authors = ["alpden550 <alpden550@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^3.0.7"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.3"
+autopep8 = "^1.5.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
