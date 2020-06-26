@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class HallMainPage(TemplateView):
+    """View to represent main page."""
+
+    template_name = 'halls/index.html'
