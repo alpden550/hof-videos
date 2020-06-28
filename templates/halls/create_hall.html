@@ -1,0 +1,13 @@
+{% extends 'halls/base.html' %}
+
+{% block title %}Create Hall{% endblock %}
+
+{% block content %}
+
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+{% endblock %}
