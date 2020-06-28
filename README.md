@@ -1,2 +1,2 @@
 # hof-videos
- Personal hall of fave for videos.
+ Personal user hall of fame for videos.
