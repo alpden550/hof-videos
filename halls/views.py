@@ -13,6 +13,12 @@ class HallMainPage(TemplateView):
     template_name = 'halls/index.html'
 
 
+class DashboardView(TemplateView):
+    """View for an user dashboard."""
+
+    template_name = 'halls/dashboard.html'
+
+
 class UserSignUpView(CreateView):
     """Sign up an user."""
 

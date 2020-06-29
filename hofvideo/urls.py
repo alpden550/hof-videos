@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.HallMainPage.as_view(), name='home'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 
     path('login/', LoginView.as_view(), name='login',),
     path('logout/', LogoutView.as_view(), name='logout'),
