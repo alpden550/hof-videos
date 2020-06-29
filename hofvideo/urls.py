@@ -32,6 +32,7 @@ urlpatterns = [
     path('signup/', views.UserSignUpView.as_view(), name='signup'),
 
     path('halloffame/create/', views.HallCreateView.as_view(), name='hall-create'),
+    path('halloffame/<int:pk>', views.HallDetailView.as_view(), name='hall-detail'),
 ]
 
 if settings.DEBUG:
