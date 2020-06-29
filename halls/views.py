@@ -6,13 +6,14 @@ from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   TemplateView, UpdateView)
 
-from halls.forms import VideoForm
+from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
 
 
 def add_video(request, pk):
     """Add video to the exact hall."""
     form = VideoForm()
+    search_form = SearchForm()
     hall = get_object_or_404(Hall, pk=pk)
 
     if request.method == 'POST':
@@ -24,7 +25,7 @@ def add_video(request, pk):
             video.save()
             return redirect('hall-detail', pk=pk)
 
-    return render(request, 'halls/add_video.html', {'form': form})
+    return render(request, 'halls/add_video.html', {'form': form, 'search_form': search_form})
 
 
 class HallMainPage(TemplateView):
