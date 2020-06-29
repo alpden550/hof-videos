@@ -1,18 +1,28 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   TemplateView, UpdateView)
 
 from halls.forms import VideoForm
-from halls.models import Hall
+from halls.models import Hall, Video
 
 
 def add_video(request, pk):
     """Add video to the exact hall."""
     form = VideoForm()
+    hall = get_object_or_404(Hall, pk=pk)
+
+    if request.method == 'POST':
+        filled_form = VideoForm(request.POST)
+
+        if filled_form.is_valid():
+            video = Video(**filled_form.cleaned_data)
+            video.hall = hall
+            video.save()
+            return redirect('hall-detail', pk=pk)
 
     return render(request, 'halls/add_video.html', {'form': form})
 
