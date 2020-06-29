@@ -1,4 +1,5 @@
 {% extends 'halls/base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}Add video{% endblock %}
 
@@ -8,14 +9,28 @@
 
 <form method="post" class="mt-4">
   {% csrf_token %}
-  {{ form.as_p }}
+
+  {% for field in form %}
+    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {% render_field field class="form-control"%}
+    </div>
+  {% endfor %}
+
   <button type="submit" class="btn btn-primary">Add Video</button>
 </form>
 
 <h2 class="mt-4">OR</h2>
 <form method="post" class="mt-4">
   {% csrf_token %}
-  {{ search_form }}
+  {% for field in search_form %}
+    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {% render_field field class="form-control"%}
+    </div>
+  {% endfor %}
 </form>
 
 {% endblock %}
