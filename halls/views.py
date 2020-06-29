@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, TemplateView
+from django.views.generic import (CreateView, DetailView, TemplateView,
+                                  UpdateView)
 
 from halls.models import Hall
 
@@ -41,7 +42,7 @@ class HallCreateView(LoginRequiredMixin, CreateView):
     model = Hall
     fields = ('title', )
     template_name = 'halls/create_hall.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('dashboard')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -51,3 +52,10 @@ class HallCreateView(LoginRequiredMixin, CreateView):
 class HallDetailView(DetailView):
     model = Hall
     template_name = 'halls/detail_hall.html'
+
+
+class HallUpdateView(UpdateView):
+    model = Hall
+    fields = ('title', )
+    template_name = 'halls/update_hall.html'
+    success_url = reverse_lazy('dashboard')

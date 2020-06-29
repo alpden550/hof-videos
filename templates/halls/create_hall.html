@@ -3,11 +3,12 @@
 {% block title %}Create Hall{% endblock %}
 
 {% block content %}
+<h2 class="my-4">Create Hall Of Fame</h2>
 
 <form method="post" class="mt-4">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Create</button>
+  <button type="submit" class="btn btn-primary">Create Hall</button>
 </form>
 
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'halls/base.html' %}
+
+{% block title %}Update {{ object }}{% endblock %}
+
+{% block content %}
+<h2 class="my-4">Update Hall Of Fame {{ hall }}</h2>
+
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary mt-3">Save {{ hall }}</button>
+</form>
+
+<a href="" class="btn btn-danger my-3">Delete {{ hall }}</a>
+
+{% endblock %}
