@@ -2,8 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DetailView, TemplateView,
-                                  UpdateView)
+from django.views.generic import CreateView, DeleteView, DetailView, TemplateView, UpdateView
 
 from halls.models import Hall
 
@@ -58,4 +57,10 @@ class HallUpdateView(UpdateView):
     model = Hall
     fields = ('title', )
     template_name = 'halls/update_hall.html'
+    success_url = reverse_lazy('dashboard')
+
+
+class HallDeleteView(DeleteView):
+    model = Hall
+    template_name = 'halls/delete_hall.html'
     success_url = reverse_lazy('dashboard')

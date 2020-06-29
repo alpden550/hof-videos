@@ -34,6 +34,7 @@ urlpatterns = [
     path('halloffame/create/', views.HallCreateView.as_view(), name='hall-create'),
     path('halloffame/<int:pk>', views.HallDetailView.as_view(), name='hall-detail'),
     path('halloffame/<int:pk>/update/', views.HallUpdateView.as_view(), name='hall-update'),
+    path('halloffame/<int:pk>/delete/', views.HallDeleteView.as_view(), name='hall-delete'),
 ]
 
 if settings.DEBUG:

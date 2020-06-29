@@ -1,0 +1,16 @@
+{% extends 'halls/base.html' %}
+
+{% block title %}Deelete {{ object }}{% endblock %}
+
+{% block content %}
+<h2 class="my-4">Delete {{ hall }} ?</h2>
+
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-danger mt-3">Delete</button>
+</form>
+
+<a href="{% url 'hall-detail' hall.pk %}" class="btn btn-success my-3">Back to {{ hall }}</a>
+
+{% endblock %}
