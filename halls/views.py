@@ -1,10 +1,20 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, TemplateView, UpdateView
+from django.views.generic import (CreateView, DeleteView, DetailView,
+                                  TemplateView, UpdateView)
 
+from halls.forms import VideoForm
 from halls.models import Hall
+
+
+def add_video(request, pk):
+    """Add video to the exact hall."""
+    form = VideoForm()
+
+    return render(request, 'halls/add_video.html', {'form': form})
 
 
 class HallMainPage(TemplateView):
@@ -29,7 +39,8 @@ class UserSignUpView(CreateView):
     def form_valid(self, form):
         """Login a new creating user."""
         view = super().form_valid(form)
-        username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
+        username, password = form.cleaned_data.get(
+            'username'), form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return view
