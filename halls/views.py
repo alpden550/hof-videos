@@ -30,8 +30,7 @@ def add_video(request, pk):
                 video.hall = hall
                 video.youtube_id = video_id
                 video.title = get_yotube_title(video_id)
-                print(video)
-                # video.save()
+                video.save()
                 return redirect('hall-detail', pk=pk)
     else:
         form = VideoForm()
