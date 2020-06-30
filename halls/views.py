@@ -9,35 +9,37 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 
 from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
-from halls.youtube import parse_youtube_url, get_yotube_title
+from halls.youtube import get_yotube_title, parse_youtube_url
 
 
 def add_video(request, pk):
     """Add video to the exact hall."""
-    form = VideoForm()
     search_form = SearchForm()
     hall = get_object_or_404(Hall, pk=pk)
     if not hall.user == request.user:
         raise PermissionDenied
 
     if request.method == 'POST':
-        filled_form = VideoForm(request.POST)
+        form = VideoForm(request.POST)
 
-        if filled_form.is_valid():
+        if form.is_valid():
             video = Video()
-            video.url = filled_form.cleaned_data.get('url')
-            video_id = parse_youtube_url(video.url)
+            video.url = form.cleaned_data.get('url')
+            video_id = parse_youtube_url(video.url)[0]
             if video_id:
                 video.hall = hall
                 video.youtube_id = video_id
                 video.title = get_yotube_title(video_id)
-                video.save()
-            return redirect('hall-detail', pk=pk)
+                print(video)
+                # video.save()
+                return redirect('hall-detail', pk=pk)
+    else:
+        form = VideoForm()
 
     return render(
         request,
         'halls/add_video.html',
-        {'form': form, 'search_form': search_form, 'hall': hall},
+        {'search_form': search_form, 'hall': hall, 'form': form},
     )
 
 

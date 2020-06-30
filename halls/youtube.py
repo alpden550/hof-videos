@@ -1,9 +1,7 @@
-import urllib.parse
-import requests
-from dotenv import load_dotenv
 import os
+import urllib.parse
 
-load_dotenv()
+import requests
 
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/videos'
@@ -12,7 +10,7 @@ YOUTUBE_URL = 'https://www.googleapis.com/youtube/v3/videos'
 def parse_youtube_url(url):
     parsed_url = urllib.parse.urlparse(url)
     video_id = urllib.parse.parse_qs(parsed_url.query).get('v')
-    return video_id[0]
+    return video_id
 
 
 def get_yotube_title(video_id):
@@ -24,4 +22,6 @@ def get_yotube_title(video_id):
 
     response = requests.get(YOUTUBE_URL, params=payload)
     response.raise_for_status()
-    return response.json().get('items')[0]['snippet']['title']
+    video_json = response.json().get('items')
+    if video_json:
+        return video_json[0]['snippet']['title']
