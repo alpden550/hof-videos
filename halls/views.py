@@ -23,7 +23,9 @@ def add_video(request, pk):
         filled_form = VideoForm(request.POST)
 
         if filled_form.is_valid():
-            video = Video(**filled_form.cleaned_data)
+            video = Video()
+            video.url = filled_form.cleaned_data.get('url')
+
             video.hall = hall
             video.save()
             return redirect('hall-detail', pk=pk)
