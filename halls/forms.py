@@ -9,6 +9,7 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ('url', )
+        labels = {'url': 'YouTube URL'}
 
 
 class SearchForm(forms.Form):

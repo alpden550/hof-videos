@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
@@ -15,6 +16,8 @@ def add_video(request, pk):
     form = VideoForm()
     search_form = SearchForm()
     hall = get_object_or_404(Hall, pk=pk)
+    if not hall.user == request.user:
+        raise PermissionDenied
 
     if request.method == 'POST':
         filled_form = VideoForm(request.POST)
@@ -25,7 +28,11 @@ def add_video(request, pk):
             video.save()
             return redirect('hall-detail', pk=pk)
 
-    return render(request, 'halls/add_video.html', {'form': form, 'search_form': search_form})
+    return render(
+        request,
+        'halls/add_video.html',
+        {'form': form, 'search_form': search_form, 'hall': hall},
+    )
 
 
 class HallMainPage(TemplateView):
