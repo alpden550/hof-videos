@@ -9,6 +9,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 
 from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
+from halls.youtube import parse_youtube_url, get_yotube_title
 
 
 def add_video(request, pk):
@@ -25,9 +26,12 @@ def add_video(request, pk):
         if filled_form.is_valid():
             video = Video()
             video.url = filled_form.cleaned_data.get('url')
-
-            video.hall = hall
-            video.save()
+            video_id = parse_youtube_url(video.url)
+            if video_id:
+                video.hall = hall
+                video.youtube_id = video_id
+                video.title = get_yotube_title(video_id)
+                video.save()
             return redirect('hall-detail', pk=pk)
 
     return render(
