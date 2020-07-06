@@ -44,6 +44,7 @@ def add_video(request, pk):
 
 
 def video_search(request):
+    """Return finding videos form searcg form."""
     form = SearchForm(request.GET)
 
     if form.is_valid():
@@ -53,6 +54,20 @@ def video_search(request):
         return JsonResponse(videos)
 
     return JsonResponse({'error': 'Not able to validate form.'})
+
+
+class VideoDeleteView(DeleteView):
+    """Delete video."""
+
+    model = Video
+    template_name = 'halls/delete_video.html'
+    success_url = reverse_lazy('dashboard')
+
+    def get(self, request, *args, **kwargs):
+        video = self.get_object()
+        if video.hall.user != request.user:
+            raise PermissionDenied
+        return super().get(request, *args, **kwargs)
 
 
 class HallMainPage(TemplateView):
