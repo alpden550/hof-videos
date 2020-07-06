@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
@@ -9,8 +10,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 
 from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
-from halls.youtube import get_yotube_title, parse_youtube_url
-from django.http import JsonResponse
+from halls.youtube import get_yotube_title, parse_youtube_url, search_videos_in_youtube
 
 
 def add_video(request, pk):
@@ -47,7 +47,12 @@ def video_search(request):
     form = SearchForm(request.GET)
 
     if form.is_valid():
-        return JsonResponse({'Response': form.cleaned_data.get('search')})
+        search_text = form.cleaned_data.get('search')
+        videos = search_videos_in_youtube(search_text)
+
+        return JsonResponse(videos)
+
+    return JsonResponse({'error': 'Not able to validate form.'})
 
 
 class HallMainPage(TemplateView):
