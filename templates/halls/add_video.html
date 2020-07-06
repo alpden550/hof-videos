@@ -1,5 +1,6 @@
 {% extends 'halls/base.html' %}
 {% load widget_tweaks %}
+{% load static %}
 
 {% block title %}Add video{% endblock %}
 
@@ -25,4 +26,10 @@
   {% endfor %}
 </form>
 
+<div id="search_results"></div>
+
+{% endblock %}
+
+{% block js_script %}
+  <script src="{% static 'js/scripts.js' %}"></script>
 {% endblock %}
