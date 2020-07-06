@@ -37,6 +37,7 @@ urlpatterns = [
     path('halloffame/<int:pk>/delete/', views.HallDeleteView.as_view(), name='hall-delete'),
 
     path('halloffame/<int:pk>/add-video/', views.add_video, name='hall-add-video'),
+    path('video/search/', views.video_search, name='video_search'),
 ]
 
 if settings.DEBUG:

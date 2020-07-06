@@ -10,6 +10,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
 from halls.youtube import get_yotube_title, parse_youtube_url
+from django.http import JsonResponse
 
 
 def add_video(request, pk):
@@ -40,6 +41,13 @@ def add_video(request, pk):
         'halls/add_video.html',
         {'search_form': search_form, 'hall': hall, 'form': form},
     )
+
+
+def video_search(request):
+    form = SearchForm(request.GET)
+
+    if form.is_valid():
+        return JsonResponse({'Response': form.cleaned_data.get('search')})
 
 
 class HallMainPage(TemplateView):
