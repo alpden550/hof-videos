@@ -1,5 +1,7 @@
 {% extends 'halls/base.html' %}
 
+{% load widget_tweaks %}
+
 {% block title %}Create Hall{% endblock %}
 
 {% block content %}
@@ -7,7 +9,13 @@
 
 <form method="post" class="mt-4">
   {% csrf_token %}
-  {{ form.as_p }}
+  {% for field in form.visible_fields %}
+    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+    {{ field.errors }}
+    {{ field.label_tag }}
+    {% render_field field class="form-control"%}
+  </div>
+  {% endfor %}
   <button type="submit" class="btn btn-primary">Create Hall</button>
 </form>
 
