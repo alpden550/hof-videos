@@ -5,12 +5,13 @@ from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView,
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
 from halls.forms import SearchForm, VideoForm
 from halls.models import Hall, Video
-from halls.youtube import get_yotube_title, parse_youtube_url, search_videos_in_youtube
+from halls.youtube import (get_yotube_title, parse_youtube_url,
+                           search_videos_in_youtube)
 
 
 def add_video(request, pk):
@@ -76,10 +77,22 @@ class HallMainPage(TemplateView):
     template_name = 'halls/index.html'
 
 
-class DashboardView(TemplateView):
+class DashboardView(ListView):
     """View for an user dashboard."""
 
     template_name = 'halls/dashboard.html'
+    model = Hall
+    context_object_name = 'halls'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user).prefetch_related('videos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not self.request.user.is_authenticated:
+            raise PermissionDenied
+
+        return context
 
 
 class UserSignUpView(CreateView):

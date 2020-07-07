@@ -2,6 +2,31 @@
 
 {% block title %}User Dashboard{% endblock %}
 
-
 {% block content %}
+<div class="text-center">
+  <h1 class="my-4">Hall Of Fames</h1>
+  <a href="{% url 'hall-create' %}" class="btn btn-success">Creare new Hall of Fame</a>
+</div>
+
+<div class="row">
+  {% for hall in halls %}
+
+  <h2><a href="{% url 'hall-detail' hall.pk %}">{{ hall }}</a></h2>
+
+  <div class="row">
+    {% for video in hall.videos.all %}
+    <div class="col-md-4 mt-3">
+      <div class="card mb-4 shadow-sm">
+        <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ video.youtube_id }}" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="card-body">
+          <p class="card-text">{{ video.title }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
 {% endblock %}
