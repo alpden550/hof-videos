@@ -71,10 +71,12 @@ class VideoDeleteView(DeleteView):
         return super().get(request, *args, **kwargs)
 
 
-class HallMainPage(TemplateView):
+class HallMainPage(ListView):
     """View to represent main page."""
 
     template_name = 'halls/index.html'
+    queryset = Hall.objects.all().order_by('-id')[:3]
+    context_object_name = 'halls'
 
 
 class DashboardView(ListView):
