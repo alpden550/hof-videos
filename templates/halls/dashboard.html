@@ -8,10 +8,14 @@
   <a href="{% url 'hall-create' %}" class="btn btn-success">Creare new Hall of Fame</a>
 </div>
 
-<div class="row">
   {% for hall in halls %}
 
   <h2><a href="{% url 'hall-detail' hall.pk %}">{{ hall }}</a></h2>
+  <div class="my-3">
+    <a href="{% url 'hall-delete' hall.pk %}" class="btn btn-danger">Delete Hall</a>
+    <a href="{% url 'hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
+    <a href="{% url 'hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
+  </div>
 
   <div class="row">
     {% for video in hall.videos.all %}
@@ -27,6 +31,5 @@
     {% endfor %}
   </div>
   {% endfor %}
-</div>
 
 {% endblock %}
