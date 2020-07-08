@@ -2,8 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
@@ -21,7 +20,7 @@ def add_video(request, pk):
     search_form = SearchForm()
     hall = get_object_or_404(Hall, pk=pk)
     if not hall.user == request.user:
-        raise PermissionDenied
+        raise Http404
 
     if request.method == 'POST':
         form = VideoForm(request.POST)
@@ -67,11 +66,11 @@ class VideoDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'halls/delete_video.html'
     success_url = reverse_lazy('dashboard')
 
-    def get(self, request, *args, **kwargs):
-        video = self.get_object()
-        if video.hall.user != request.user:
-            raise PermissionDenied
-        return super().get(request, *args, **kwargs)
+    def get_object(self):
+        video = super().get_object()
+        if video.hall.user != self.request.user:
+            raise Http404
+        return video
 
 
 class HallMainPage(ListView):
@@ -91,13 +90,6 @@ class DashboardView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user).prefetch_related('videos')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if not self.request.user.is_authenticated:
-            raise PermissionDenied
-
-        return context
 
 
 class UserSignUpView(CreateView):
@@ -141,8 +133,20 @@ class HallUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'halls/update_hall.html'
     success_url = reverse_lazy('dashboard')
 
+    def get_object(self):
+        hall = super().get_object()
+        if hall.user != self.request.user:
+            raise Http404
+        return hall
+
 
 class HallDeleteView(LoginRequiredMixin, DeleteView):
     model = Hall
     template_name = 'halls/delete_hall.html'
     success_url = reverse_lazy('dashboard')
+
+    def get_object(self):
+        hall = super().get_object()
+        if hall.user != self.request.user:
+            raise Http404
+        return hall
