@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -14,6 +15,7 @@ from halls.youtube import (get_yotube_title, parse_youtube_url,
                            search_videos_in_youtube)
 
 
+@login_required
 def add_video(request, pk):
     """Add video to the exact hall."""
     search_form = SearchForm()
@@ -44,6 +46,7 @@ def add_video(request, pk):
     )
 
 
+@login_required
 def video_search(request):
     """Return finding videos form searcg form."""
     form = SearchForm(request.GET)
@@ -57,7 +60,7 @@ def video_search(request):
     return JsonResponse({'error': 'Not able to validate form.'})
 
 
-class VideoDeleteView(DeleteView):
+class VideoDeleteView(LoginRequiredMixin, DeleteView):
     """Delete video."""
 
     model = Video
@@ -79,7 +82,7 @@ class HallMainPage(ListView):
     context_object_name = 'halls'
 
 
-class DashboardView(ListView):
+class DashboardView(LoginRequiredMixin, ListView):
     """View for an user dashboard."""
 
     template_name = 'halls/dashboard.html'
@@ -132,14 +135,14 @@ class HallDetailView(DetailView):
     template_name = 'halls/detail_hall.html'
 
 
-class HallUpdateView(UpdateView):
+class HallUpdateView(LoginRequiredMixin, UpdateView):
     model = Hall
     fields = ('title', )
     template_name = 'halls/update_hall.html'
     success_url = reverse_lazy('dashboard')
 
 
-class HallDeleteView(DeleteView):
+class HallDeleteView(LoginRequiredMixin, DeleteView):
     model = Hall
     template_name = 'halls/delete_hall.html'
     success_url = reverse_lazy('dashboard')
