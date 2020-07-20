@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from halls.forms import SearchForm, VideoForm
+from halls.forms import SearchForm, VideoForm, HallFormset
 from halls.models import Hall, Video
 from halls.youtube import (get_yotube_title, parse_youtube_url,
                            search_videos_in_youtube)
@@ -117,9 +117,25 @@ class HallCreateView(LoginRequiredMixin, CreateView):
     template_name = 'halls/create_hall.html'
     success_url = reverse_lazy('dashboard')
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['formset'] = HallFormset(queryset=Hall.objects.none())
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        formset = HallFormset(request.POST, request.FILES)
+
+        if formset.is_valid():
+            for form in formset:
+                form.instance.user = self.request.user
+            formset.save()
+            return redirect('dashboard')
+        else:
+            return self.form_invalid(formset)
+
+    def form_invalid(self, formset):
+        return self.render_to_response(self.get_context_data(formset=formset))
 
 
 class HallDetailView(DetailView):

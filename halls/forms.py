@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import modelformset_factory
 
-from halls.models import Video
+from halls.models import Hall, Video
 from halls.youtube import get_yotube_title, parse_youtube_url
 
 
@@ -29,3 +30,22 @@ class SearchForm(forms.Form):
     """Search video in the TouTube form."""
 
     search = forms.CharField(label='Search for Videos', max_length=255)
+
+
+class HallForm(forms.ModelForm):
+    """Form to create Hall."""
+
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control my-3', 'required': True}),
+    )
+
+    class Meta:
+        model = Hall
+        fields = ('title', )
+
+
+HallFormset = modelformset_factory(
+    Hall,
+    form=HallForm,
+    extra=1,
+)

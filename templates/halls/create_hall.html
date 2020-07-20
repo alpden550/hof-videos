@@ -9,14 +9,36 @@
 
 <form method="post" class="mt-4">
   {% csrf_token %}
-  {% for field in form.visible_fields %}
-    <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
-    {{ field.errors }}
-    {{ field.label_tag }}
-    {% render_field field class="form-control"%}
+
+  {{ formset.management_form }}
+  <div id="form_set">
+    {% for form in formset.forms %}
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+      {{ form }}
+
+    {% endfor %}
+
   </div>
-  {% endfor %}
+
+  <input type="button" value="Add More" id="add_more" class="btn btn-primary">
   <button type="submit" class="btn btn-primary">Create Hall</button>
+
 </form>
 
+<div id="empty_form" style="display:none">
+  {{ formset.empty_form }}
+</div>
+
+{% endblock %}
+
+{% block js_script %}
+<script>
+  $('#add_more').click(function () {
+    var form_idx = $('#id_form-TOTAL_FORMS').val();
+    $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+    $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+  });
+</script>
 {% endblock %}
