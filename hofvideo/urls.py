@@ -26,8 +26,9 @@ urlpatterns = [
 
     path('', HallMainPage.as_view(), name='home'),
 
-    path('auth/', include('users.urls')),
     path('', include('halls.urls')),
+    path('auth/', include('users.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

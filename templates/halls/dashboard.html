@@ -11,12 +11,12 @@
   {% for hall in halls %}
 
   <div class="hall">
-    <h2><a href="{% url 'hall:hall-detail' hall.pk %}">{{ hall }}</a></h2>
-    <div class="my-3">
-      <a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger">Delete Hall</a>
+    <h2 class="my-3"><a href="{% url 'hall:hall-detail' hall.pk %}">{{ hall }}</a></h2>
+
+      <input type="button" value="Delete" class="btn btn-danger hall-delete" data-hall="{{hall.id}}">
       <a href="{% url 'hall:hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
       <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
-    </div>
+
 
     <div class="row">
       {% for video in hall.videos.all %}
@@ -37,5 +37,27 @@
 {% endblock %}
 
 {% block js_script %}
-<script></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('click', event => {
+      let element = event.target;
+
+      if (element.value == 'Delete') {
+        element.parentElement.style.animationPlayState = 'running';
+        element.parentElement.addEventListener('animationend', () => {
+          element.parentElement.remove();
+          delete_hall(element.dataset.hall);
+        });
+      }
+    })
+  })
+
+  let delete_hall = (hall_id) => {
+    fetch(`/api/halls/delete/`, {
+      method: 'DELETE',
+      body: JSON.stringify({'hall_id': hall_id})
+    })
+    .then((response) => response.json())
+  }
+</script>
 {% endblock %}
