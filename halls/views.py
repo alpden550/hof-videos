@@ -1,6 +1,4 @@
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from halls.forms import SearchForm, VideoForm, HallFormset
+from halls.forms import HallFormset, SearchForm, VideoForm
 from halls.models import Hall, Video
 from halls.youtube import (get_yotube_title, parse_youtube_url,
                            search_videos_in_youtube)

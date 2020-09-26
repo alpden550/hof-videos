@@ -14,7 +14,6 @@ import os
 
 import dj_database_url
 from dotenv import load_dotenv
-from django.urls import reverse_lazy
 
 load_dotenv()
 
