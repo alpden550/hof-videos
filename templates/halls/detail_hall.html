@@ -7,9 +7,10 @@
 
 {% if user.id == hall.user.id %}
 <div class="my-3">
-  <a href="{% url 'hall-delete' hall.pk %}" class="btn btn-danger">Delete Hall</a>
-  <a href="{% url 'hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
-  <a href="{% url 'hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
+  <a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger">Delete Hall</a>
+  <a href="{% url 'hall:hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
+  <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
+  <a href="{% url 'hall:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
 </div>
 {% endif %}
 
@@ -22,7 +23,7 @@
       <div class="card-body">
         <p class="card-text">{{ video.title }}</p>
         {% if user.id == hall.user.id %}
-          <a href="{% url 'video-delete' video.pk %}" class="btn btn-danger">Delete</a>
+          <a href="{% url 'hall:video-delete' video.pk %}" class="btn btn-danger">Delete</a>
         {% endif %}
       </div>
     </div>

@@ -3,7 +3,7 @@ version: "3"
 services:
 
     db:
-        image: "postgres:12-alpine"
+        image: "postgres:latest"
         container_name: "hofv-postgres"
         environment:
             - POSTGRES_DB=${POSTGRES_DB}
@@ -11,6 +11,7 @@ services:
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         ports:
             - "54320:5432"
+        restart: always
         volumes:
             - "pgdata:/var/lib/postgresql/data"
 

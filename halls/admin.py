@@ -3,9 +3,17 @@ from django.contrib import admin
 from halls.models import Hall, Video
 
 
+class VideoInline(admin.TabularInline):
+    model = Video
+    extra = 0
+
+
 @admin.register(Hall)
 class HallAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'title', 'user')
+    list_editable = ('title',)
+    search_fields = ('title', )
+    inlines = (VideoInline, )
 
 
 @admin.register(Video)

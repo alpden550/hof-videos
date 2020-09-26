@@ -19,6 +19,6 @@
   <button type="submit" class="btn btn-primary mt-3">Save {{ hall }}</button>
 </form>
 
-<a href="{% url 'hall-delete' hall.pk %}" class="btn btn-danger my-3">Delete {{ hall }}</a>
+<a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger my-3">Delete {{ hall }}</a>
 
 {% endblock %}

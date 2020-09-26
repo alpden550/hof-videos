@@ -12,10 +12,11 @@
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit" class="btn btn-primary">Add Video</button>
+  <a class="btn btn-outline-secondary" href="{% url 'hall:hall-detail' request.resolver_match.kwargs.pk %}" role="button">Cancel</a>
 </form>
 
 <h2 class="mt-4">OR</h2>
-<form method="post" class="mt-4" action="{% url 'video_search' %}">
+<form method="post" class="mt-4" action="{% url 'hall:video_search' %}">
   {% csrf_token %}
   {% for field in search_form %}
   <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">

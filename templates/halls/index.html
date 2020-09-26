@@ -9,14 +9,13 @@
     them with the world.
     Click the button below to get started.
   </p>
-  <p><a href="{% url 'hall-create' %}" class="btn btn-primary">Create Your Hall of Fame</a></p>
+  <p><a href="{% url 'hall:hall-create' %}" class="btn btn-primary">Create Your Hall of Fame</a></p>
 </section>
 
 <h2 class="text-center">Recent Halls</h2>
 {% for hall in halls %}
 
-<h2><a href="{% url 'hall-detail' hall.pk %}">{{ hall }}</a></h2>
-
+<h2><a href="{% url 'hall:hall-detail' hall.pk %}">{{ hall }}</a></h2>
 <div class="row">
   {% for video in hall.videos.all %}
   <div class="col-md-4 mt-3">
@@ -31,4 +30,5 @@
   {% endfor %}
 </div>
 {% endfor %}
+
 {% endblock %}

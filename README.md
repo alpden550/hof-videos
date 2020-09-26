@@ -32,6 +32,12 @@ YOUTUBE_API_KEY= your youtube api key
 
 ```
 
+To start postgres locally run docker:
+
+```sh
+docker-compose up
+```
+
 ## How to run
 
 To run local

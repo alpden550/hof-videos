@@ -34,7 +34,7 @@ def add_video(request, pk):
                 video.youtube_id = video_id
                 video.title = get_yotube_title(video_id)
                 video.save()
-                return redirect('hall-detail', pk=pk)
+                return redirect('hall:hall-detail', pk=pk)
     else:
         form = VideoForm()
 
@@ -64,7 +64,7 @@ class VideoDeleteView(LoginRequiredMixin, DeleteView):
 
     model = Video
     template_name = 'halls/delete_video.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('hall:dashboard')
 
     def get_object(self):
         video = super().get_object()
@@ -77,7 +77,7 @@ class HallMainPage(ListView):
     """View to represent main page."""
 
     template_name = 'halls/index.html'
-    queryset = Hall.objects.all().order_by('-id')[:3]
+    queryset = Hall.objects.all().order_by('-id')[:5]
     context_object_name = 'halls'
 
 
@@ -97,7 +97,7 @@ class UserSignUpView(CreateView):
 
     form_class = UserCreationForm
     template_name = 'registration/signup.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('hall:home')
 
     def form_valid(self, form):
         """Login a new creating user."""
@@ -115,7 +115,7 @@ class HallCreateView(LoginRequiredMixin, CreateView):
     model = Hall
     fields = ('title', )
     template_name = 'halls/create_hall.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('hall:dashboard')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -130,7 +130,7 @@ class HallCreateView(LoginRequiredMixin, CreateView):
             for form in formset:
                 form.instance.user = self.request.user
             formset.save()
-            return redirect('dashboard')
+            return redirect('hall:dashboard')
         else:
             return self.form_invalid(formset)
 
@@ -147,7 +147,7 @@ class HallUpdateView(LoginRequiredMixin, UpdateView):
     model = Hall
     fields = ('title', )
     template_name = 'halls/update_hall.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('hall:dashboard')
 
     def get_object(self):
         hall = super().get_object()
@@ -159,7 +159,7 @@ class HallUpdateView(LoginRequiredMixin, UpdateView):
 class HallDeleteView(LoginRequiredMixin, DeleteView):
     model = Hall
     template_name = 'halls/delete_hall.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('hall:dashboard')
 
     def get_object(self):
         hall = super().get_object()

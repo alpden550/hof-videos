@@ -14,6 +14,7 @@ import os
 
 import dj_database_url
 from dotenv import load_dotenv
+from django.urls import reverse_lazy
 
 load_dotenv()
 
@@ -144,7 +145,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'hofvideo/static')]
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-LOGIN_URL = 'login'
+LOGIN_URL = 'hall:login'
 
 
 # whitenoise settings
