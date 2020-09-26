@@ -120,11 +120,15 @@ class HallCreateView(LoginRequiredMixin, CreateView):
 
 
 class HallDetailView(DetailView):
+    """Hall detail page."""
+
     model = Hall
     template_name = 'halls/detail_hall.html'
 
 
 class HallUpdateView(LoginRequiredMixin, UpdateView):
+    """Hall update view for own user."""
+
     model = Hall
     fields = ('title', )
     template_name = 'halls/update_hall.html'
@@ -138,6 +142,8 @@ class HallUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class HallDeleteView(LoginRequiredMixin, DeleteView):
+    """Delete hall from own user."""
+
     model = Hall
     template_name = 'halls/delete_hall.html'
     success_url = reverse_lazy('hall:dashboard')
