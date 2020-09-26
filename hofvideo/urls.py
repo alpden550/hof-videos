@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', HallMainPage.as_view(), name='home'),
+
+    path('auth/', include('users.urls')),
     path('', include('halls.urls')),
 ]
 

@@ -92,23 +92,6 @@ class DashboardView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(user=self.request.user).prefetch_related('videos')
 
 
-class UserSignUpView(CreateView):
-    """Sign up an user."""
-
-    form_class = UserCreationForm
-    template_name = 'registration/signup.html'
-    success_url = reverse_lazy('hall:home')
-
-    def form_valid(self, form):
-        """Login a new creating user."""
-        view = super().form_valid(form)
-        username, password = form.cleaned_data.get(
-            'username'), form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=password)
-        login(self.request, user)
-        return view
-
-
 class HallCreateView(LoginRequiredMixin, CreateView):
     """Create Hall for an authenticated user."""
 

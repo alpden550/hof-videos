@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
 
 from halls import views
 
@@ -7,10 +6,6 @@ app_name = 'hall'
 
 urlpatterns = [
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-
-    path('login/', LoginView.as_view(), name='login',),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('signup/', views.UserSignUpView.as_view(), name='signup'),
 
     path('halloffame/create/', views.HallCreateView.as_view(), name='hall-create'),
     path('halloffame/<int:pk>', views.HallDetailView.as_view(), name='hall-detail'),

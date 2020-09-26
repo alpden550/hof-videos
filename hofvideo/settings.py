@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     'halls.apps.HallsConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -145,9 +146,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'hofvideo/static')]
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-LOGIN_URL = 'hall:login'
+LOGIN_URL = 'user:login'
 
 
 # whitenoise settings
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+AUTH_USER_MODEL = 'users.CustomUser'
