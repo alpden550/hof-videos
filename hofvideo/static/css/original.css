@@ -28,3 +28,10 @@
   animation-fill-mode: forwards;
   animation-play-state: paused;
 }
+
+.video {
+  animation-name: hide;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}

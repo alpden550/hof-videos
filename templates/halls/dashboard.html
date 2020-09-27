@@ -14,7 +14,7 @@
     <h2 class="my-3"><a href="{% url 'hall:hall-detail' hall.pk %}">{{ hall }}</a></h2>
 
       <input type="button" value="Delete" class="btn btn-danger hall-delete" data-hall="{{hall.id}}">
-      <a href="{% url 'hall:hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
+      <a href="{% url 'hall:hall-detail' hall.pk %}" class="btn btn-primary">Edit Hall</a>
       <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
 
 

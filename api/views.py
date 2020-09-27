@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from halls.models import Hall
+from halls.models import Hall, Video
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.http import require_http_methods
@@ -34,3 +34,16 @@ def update_hall(request):
     hall.title = json_data.get('text')
     hall.save()
     return JsonResponse({'message': 'Deleted successful', 'status': 200})
+
+
+@csrf_exempt
+@require_http_methods(['DELETE'])
+def delete_video(request):
+    """Delete video endpoint."""
+    json_data = json.loads(request.body)
+    video = get_object_or_404(Video, pk=json_data.get('video_id'))
+    if not video.hall.user == request.user:
+        raise PermissionDenied
+
+    video.delete()
+    return JsonResponse(status=204, data={'message': 'Deleted successful', 'status': 204})

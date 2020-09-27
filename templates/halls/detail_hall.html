@@ -20,14 +20,14 @@
 
 <div class="row">
   {% for video in hall.videos.all %}
-  <div class="col-md-4 mt-3">
+  <div class="col-md-4 mt-3 video">
     <div class="card mb-4 shadow-sm">
       <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{ video.youtube_id }}" frameborder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <div class="card-body">
         <p class="card-text">{{ video.title }}</p>
         {% if user.id == hall.user.id %}
-        <a href="{% url 'hall:video-delete' video.pk %}" class="btn btn-danger">Delete</a>
+        <input type="button" value="Delete Video" class="btn btn-danger video-delete" data-video="{{ video.id }}">
         {% endif %}
       </div>
     </div>
@@ -49,8 +49,24 @@
       else if (element.value === 'Delete') {
         delete_hall(element.dataset.hall);
       }
+      else if (element.value === 'Delete Video') {
+        let video = element.parentElement.parentElement.parentElement
+
+        video.style.animationPlayState = 'running';
+        video.addEventListener('animationend', () => {
+          video.remove();
+          delete_video(element.dataset.video);
+        })
+      }
     })
   })
+
+  let delete_video = (video_id) => {
+    fetch('/api/halls/video/delete/', {
+      method: 'DELETE',
+      body: JSON.stringify({'video_id': video_id})
+    })
+  }
 
   let delete_hall = (hall_id) => {
     fetch(`/api/halls/delete/`, {
