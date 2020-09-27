@@ -3,14 +3,18 @@
 {% block title %}Hall {{ hall }}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">{{ hall }}</h1>
+<h1 class="my-4 post-title">{{ hall }}</h1>
+
+<textarea id="post-title-text" class="form-control mt-5 mb-3" cols="30" rows="2"
+  style="display: none;">{{ hall.title }}</textarea>
+ <input type="button" value="Update" class="btn btn-success w-25 update" style="display: none;">
 
 {% if user.id == hall.user.id %}
-<div class="my-3">
-  <a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger">Delete Hall</a>
-  <a href="{% url 'hall:hall-update' hall.pk %}" class="btn btn-primary">Edit Hall</a>
-  <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary">Add Video To Hall</a>
-  <a href="{% url 'hall:dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+<div class="my-3 hall-buttons">
+  <a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger delete">Delete Hall</a>
+  <input type="button" value="Edit" class="btn btn-primary hall-edit" data-hall="{{ hall.id }}">
+  <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary add">Add Video To Hall</a>
+  <a href="{% url 'hall:dashboard' %}" class="btn btn-outline-secondary cancel">Cancel</a>
 </div>
 {% endif %}
 
@@ -23,7 +27,7 @@
       <div class="card-body">
         <p class="card-text">{{ video.title }}</p>
         {% if user.id == hall.user.id %}
-          <a href="{% url 'hall:video-delete' video.pk %}" class="btn btn-danger">Delete</a>
+        <a href="{% url 'hall:video-delete' video.pk %}" class="btn btn-danger">Delete</a>
         {% endif %}
       </div>
     </div>
@@ -32,3 +36,48 @@
 </div>
 
 {% endblock %}
+
+{% block js_script %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('click', event => {
+      let element = event.target;
+
+      if (element.value === 'Edit') {
+        edit_hall(element.dataset.hall);
+      }
+    })
+  })
+
+  let edit_hall = (hall_id) => {
+    let textarea = document.querySelector('#post-title-text');
+    let update_button = document.querySelector('.update')
+
+    document.querySelector('.post-title').style.display = 'none';
+    document.querySelector('.hall-buttons').style.display = 'none';
+    textarea.style.display = 'block';
+    update_button.style.display = 'block';
+
+    update_button.addEventListener('click', () => {
+
+      fetch('/api/halls/update/', {
+          method: 'POST',
+          body: JSON.stringify({
+            'hall_id': hall_id,
+            'text': textarea.value
+          })
+        })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.status === 200) {
+            textarea.style.display = 'none';
+            document.querySelector('.post-title').textContent = textarea.value;
+            document.querySelector('.post-title').style.display = 'block';
+            document.querySelector('.hall-buttons').style.display = 'block';
+            update_button.style.display = 'none';
+          }
+        })
+    })
+  }
+</script>
+{% endblock js_script %}
