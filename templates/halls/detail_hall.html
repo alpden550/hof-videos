@@ -11,7 +11,7 @@
 
 {% if user.id == hall.user.id %}
 <div class="my-3 hall-buttons">
-  <a href="{% url 'hall:hall-delete' hall.pk %}" class="btn btn-danger delete">Delete Hall</a>
+  <input type="button" value="Delete" class="btn btn-danger hall-delete" data-hall="{{ hall.id }}">
   <input type="button" value="Edit" class="btn btn-primary hall-edit" data-hall="{{ hall.id }}">
   <a href="{% url 'hall:hall-add-video' hall.pk %}" class="btn btn-primary add">Add Video To Hall</a>
   <a href="{% url 'hall:dashboard' %}" class="btn btn-outline-secondary cancel">Cancel</a>
@@ -46,8 +46,21 @@
       if (element.value === 'Edit') {
         edit_hall(element.dataset.hall);
       }
+      else if (element.value === 'Delete') {
+        delete_hall(element.dataset.hall);
+      }
     })
   })
+
+  let delete_hall = (hall_id) => {
+    fetch(`/api/halls/delete/`, {
+      method: 'DELETE',
+      body: JSON.stringify({'hall_id': hall_id})
+    })
+    .then(response => {
+      redirect: window.location.replace("{% url 'hall:dashboard' %}");
+    })
+  }
 
   let edit_hall = (hall_id) => {
     let textarea = document.querySelector('#post-title-text');
