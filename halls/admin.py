@@ -13,6 +13,7 @@ class HallAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'user')
     list_editable = ('title',)
     search_fields = ('title', )
+    list_filter = ('user', )
     inlines = (VideoInline, )
 
 
